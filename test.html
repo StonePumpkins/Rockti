@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎸 摇滚人格测试 - 你最像哪个摇滚传奇？</title>
+    <title>摇滚灵魂测试 —— 你骨子里是哪个摇滚传奇？</title>
     <style>
         :root {
-            --bg: #0f0f13;
-            --card-bg: #1c1c24;
-            --accent: #ff5e2c;
-            --accent2: #ff9f4b;
-            --text: #e8e8f0;
-            --text2: #a0a0b8;
-            --bar-bg: #2a2a38;
-            --option-bg: #252530;
-            --option-hover: #2f2f3e;
-            --selected: #3b2025;
-            --border-glow: 0 0 20px rgba(255, 94, 44, 0.4);
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-deep: #060f1c;
+            --bg-mid: #0b1a2f;
+            --bg-light: #0f2340;
+            --text-primary: #e8edf3;
+            --text-secondary: #b0c4d8;
+            --text-muted: #6b8aab;
+            --accent-gold: #c9a96e;
+            --accent-gold-light: #e0c78a;
+            --accent-blue: #5b8db8;
+            --accent-warm: #d4956b;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            --option-bg: rgba(255, 255, 255, 0.03);
+            --option-hover-bg: rgba(255, 255, 255, 0.07);
+            --option-selected-bg: rgba(201, 169, 110, 0.12);
+            --shadow-glow: 0 0 40px rgba(100, 150, 200, 0.15);
+            --font-display: 'Georgia', 'Times New Roman', 'STSong', 'Songti SC', 'Noto Serif SC', serif;
+            --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+            --transition-smooth: 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         * {
@@ -26,826 +34,1295 @@
             box-sizing: border-box;
         }
 
+        html,
         body {
-            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-image:
-                radial-gradient(ellipse at 50% 30%, rgba(255, 94, 44, 0.08) 0%, transparent 70%),
-                radial-gradient(ellipse at 80% 70%, rgba(255, 159, 75, 0.06) 0%, transparent 60%),
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px);
-            padding: 20px;
-            overflow-x: hidden;
-            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        /* GitHub 图标 */
-        .github-link {
+        /* ============ Canvas 星空背景 ============ */
+        #starCanvas {
             position: fixed;
-            top: 20px;
-            right: 24px;
-            z-index: 100;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(20, 20, 28, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 94, 44, 0.4);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-        }
-        .github-link:hover {
-            border-color: #ff5e2c;
-            box-shadow: 0 0 18px rgba(255, 94, 44, 0.7);
-            transform: scale(1.08);
-        }
-        .github-link svg {
-            width: 24px;
-            height: 24px;
-            fill: #e8e8f0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        /* 主容器 */
-        .container {
+        /* ============ 主容器 ============ */
+        #app-container {
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 850px;
-            background: var(--card-bg);
-            border-radius: 28px;
-            padding: 48px 44px 44px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 94, 44, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all var(--transition);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-        .header .icon-row {
-            font-size: 54px;
-            letter-spacing: 5px;
-            margin-bottom: 10px;
-            animation: pulseIcon 2s ease-in-out infinite;
-        }
-        @keyframes pulseIcon {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(255,94,44,0.4)); }
-            50% { transform: scale(1.06); filter: drop-shadow(0 0 16px rgba(255,94,44,0.8)); }
-        }
-        .header h1 {
-            font-size: 2.3rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            background: linear-gradient(135deg, #ff6b4a, #ffb347);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 0 0 8px;
-            text-transform: uppercase;
-        }
-        .header .subtitle {
-            font-size: 0.95rem;
-            color: var(--text2);
-            letter-spacing: 1.5px;
-            font-weight: 400;
-        }
-
-        .progress-wrap {
-            margin-bottom: 32px;
-        }
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text2);
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-        .progress-bar {
-            height: 8px;
-            background: var(--bar-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
-        }
-        .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ff5e2c, #ff8c3a, #ffb347);
-            border-radius: 10px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 0%;
-            box-shadow: 0 0 14px rgba(255, 94, 44, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
 
-        .question-area {
-            min-height: 320px;
-            transition: opacity 0.3s ease;
-        }
-        .question-number {
-            display: inline-block;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #ff9f4b;
-            margin-bottom: 14px;
-            font-weight: 700;
-            background: rgba(255, 159, 75, 0.1);
-            padding: 6px 18px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 159, 75, 0.3);
-        }
-        .question-text {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 28px;
-            line-height: 1.6;
-            color: #ffffff;
-            letter-spacing: 0.4px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .option-btn {
+        /* ============ 顶部进度区域 ============ */
+        .progress-area {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 18px 28px;
             display: flex;
             align-items: center;
             gap: 16px;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        .progress-area.hidden {
+            opacity: 0;
+        }
+        .progress-track {
+            flex: 1;
+            height: 1.5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-gold);
+            border-radius: 2px;
+            transition: width 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            position: relative;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent-gold-light);
+            box-shadow: 0 0 10px var(--accent-gold-light), 0 0 20px rgba(201, 169, 110, 0.6);
+        }
+        .progress-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            font-family: var(--font-display);
+            white-space: nowrap;
+            min-width: 55px;
+            text-align: right;
+        }
+        .progress-count .current {
+            color: var(--accent-gold-light);
+            font-size: 1.15rem;
+            font-weight: bold;
+        }
+
+        /* ============ 屏幕（题目/欢迎/结果） ============ */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 18px 24px;
-            background: var(--option-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            color: var(--text);
-            cursor: pointer;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 60px 30px 60px;
+            transition: opacity 0.55s ease, transform 0.55s ease;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(18px);
+        }
+        .screen.active {
+            pointer-events: auto;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .screen.exit-up {
+            opacity: 0;
+            transform: translateY(-24px);
+        }
+
+        /* ============ 欢迎页 ============ */
+        .welcome-inner {
+            text-align: center;
+            max-width: 620px;
+            width: 100%;
+        }
+        .welcome-icon {
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+            animation: gentleFloat 4s ease-in-out infinite;
+            display: block;
+            filter: drop-shadow(0 8px 24px rgba(180, 160, 120, 0.3));
+        }
+        @keyframes gentleFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-14px);
+            }
+        }
+        .welcome-title {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.25;
+        }
+        .welcome-title .accent {
+            color: var(--accent-gold-light);
+            font-style: italic;
+        }
+        .welcome-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 36px;
+            font-family: var(--font-display);
+        }
+        .welcome-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--accent-gold);
+            margin: 0 auto 32px;
+            opacity: 0.6;
+        }
+        .welcome-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 38px;
+            letter-spacing: 0.03em;
+        }
+        .btn-start {
+            display: inline-block;
+            padding: 15px 50px;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold-light);
+            background: transparent;
             font-size: 1rem;
-            text-align: left;
-            transition: all var(--transition);
-            font-family: inherit;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.12em;
+            cursor: pointer;
+            font-family: var(--font-display);
+            transition: all var(--transition-smooth);
             position: relative;
             overflow: hidden;
+            text-transform: uppercase;
+        }
+        .btn-start:hover {
+            background: rgba(201, 169, 110, 0.08);
+            border-color: var(--accent-gold-light);
+            box-shadow: 0 0 30px rgba(201, 169, 110, 0.2);
+            letter-spacing: 0.16em;
+        }
+        .btn-start:active {
+            transform: scale(0.96);
+            transition: 0.1s;
+        }
+
+        /* ============ 题目页 ============ */
+        .question-inner {
+            max-width: 680px;
+            width: 100%;
+            text-align: center;
+        }
+        .question-number-indicator {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            margin-bottom: 20px;
+            font-family: var(--font-display);
+        }
+        .question-text {
+            font-family: var(--font-display);
+            font-size: 1.7rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--text-primary);
+            margin-bottom: 40px;
+            letter-spacing: 0.04em;
+            transition: all var(--transition-smooth);
+        }
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 17px 24px;
+            background: var(--option-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 2px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: all var(--transition-smooth);
+            position: relative;
+            font-family: var(--font-body);
+            line-height: 1.5;
         }
         .option-btn:hover {
-            background: var(--option-hover);
-            border-color: rgba(255, 94, 44, 0.6);
-            transform: translateX(6px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 15px rgba(255,94,44,0.25);
+            background: var(--option-hover-bg);
+            border-color: var(--border-hover);
+            color: #fff;
+            transform: translateX(3px);
+            box-shadow: 0 0 20px rgba(120, 160, 200, 0.1);
         }
         .option-btn:active {
             transform: scale(0.98);
             transition: 0.1s;
         }
-        .option-btn .opt-letter {
-            flex-shrink: 0;
-            width: 42px;
-            height: 42px;
+        .option-btn.selected-flash {
+            background: var(--option-selected-bg);
+            border-color: var(--accent-gold);
+            color: #fff;
+            animation: optionPulse 0.5s ease-out;
+        }
+        @keyframes optionPulse {
+            0% {
+                box-shadow: 0 0 0 rgba(201, 169, 110, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(201, 169, 110, 0);
+            }
+        }
+        .option-letter {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-right: 14px;
+            font-size: 0.8rem;
+            letter-spacing: 0;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all var(--transition-smooth);
+        }
+        .option-btn:hover .option-letter {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold-light);
+        }
+
+        /* ============ 过渡动画 ============ */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+            opacity: 0;
+            background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.06) 0%, transparent 70%);
+            transition: opacity 0.35s ease;
+        }
+        .transition-overlay.flash {
+            opacity: 1;
+            transition: opacity 0.05s ease;
+        }
+
+        /* ============ 结果页 ============ */
+        .result-inner {
+            text-align: center;
+            max-width: 640px;
+            width: 100%;
+            animation: resultFadeIn 0.8s ease-out;
+        }
+        @keyframes resultFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .result-badge {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-family: var(--font-display);
+        }
+        .result-name {
+            font-family: var(--font-display);
+            font-size: 3.2rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            color: #fff;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+        .result-band {
+            font-size: 1rem;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+            font-style: italic;
+        }
+        .result-match-bar {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            font-size: 1rem;
-            transition: all var(--transition);
-            color: #ff9f4b;
-            border: 1px solid rgba(255, 159, 75, 0.3);
+            gap: 12px;
+            margin: 18px 0;
         }
-        .option-btn:hover .opt-letter {
-            background: rgba(255, 94, 44, 0.35);
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(255, 94, 44, 0.5);
-            border-color: #ff5e2c;
+        .result-match-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-gold);
         }
-        .option-btn .opt-text {
-            flex: 1;
-            line-height: 1.5;
-            font-weight: 500;
+        .result-match-line {
+            width: 100px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
         }
-
-        /* 结果区域 */
-        .result-area {
-            text-align: center;
-            animation: fadeInUp 0.5s ease;
+        .result-match-percent {
+            font-size: 1.6rem;
+            color: var(--accent-gold-light);
+            font-family: var(--font-display);
+            letter-spacing: 0.04em;
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .result-emoji {
-            font-size: 110px;
-            margin-bottom: 15px;
-            animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 0 20px rgba(255, 159, 75, 0.7));
-        }
-        @keyframes bounceIn {
-            0% { transform: scale(0.2); opacity: 0; }
-            50% { transform: scale(1.15); }
-            70% { transform: scale(0.85); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .result-band {
-            font-size: 1.8rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #ffd966, #ff8c42);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 6px;
-        }
-        .result-member {
-            font-size: 2.3rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #fff;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(255,255,255,0.2);
-        }
-        .result-tagline {
-            font-size: 1rem;
-            color: #ffb347;
-            font-style: italic;
-            margin-bottom: 22px;
+        .result-divider {
+            width: 40px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 20px auto;
         }
         .result-desc {
-            font-size: 1.05rem;
-            color: #d0d0e0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
             line-height: 1.8;
-            max-width: 620px;
-            margin: 0 auto 26px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 22px 28px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            letter-spacing: 0.03em;
+            max-width: 500px;
+            margin: 0 auto 24px;
         }
-        .result-traits {
+        .result-runnerups {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
             justify-content: center;
-            margin-bottom: 30px;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
         }
-        .trait-tag {
-            background: rgba(255, 94, 44, 0.25);
-            color: #ffb7a3;
-            padding: 8px 20px;
-            border-radius: 24px;
+        .runnerup-item {
+            text-align: center;
+            opacity: 0.7;
+        }
+        .runnerup-name {
             font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            border: 1px solid rgba(255, 94, 44, 0.3);
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            letter-spacing: 0.04em;
         }
-        .signature {
-            font-size: 0.8rem;
-            color: #7a7a90;
-            margin-top: 28px;
-            letter-spacing: 1.5px;
-            font-style: italic;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            padding-top: 18px;
+        .runnerup-percent {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
-        .btn {
+        .btn-retry {
             display: inline-block;
-            padding: 14px 38px;
-            border-radius: 32px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            letter-spacing: 1px;
-            transition: all var(--transition);
-            border: none;
-            font-family: inherit;
-            text-transform: uppercase;
-            margin: 0 6px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #ff5e2c, #d63e1e);
-            color: #fff;
-            box-shadow: 0 8px 28px rgba(255, 94, 44, 0.4);
-        }
-        .btn-primary:hover {
-            box-shadow: 0 12px 34px rgba(255, 94, 44, 0.7);
-            transform: translateY(-2px);
-        }
-        .btn-outline {
+            padding: 12px 36px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--text-secondary);
             background: transparent;
-            color: #fff;
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            font-family: var(--font-display);
+            transition: all var(--transition-smooth);
+            text-transform: uppercase;
         }
-        .btn-outline:hover {
-            border-color: #ff9f4b;
-            background: rgba(255, 159, 75, 0.1);
-            color: #ff9f4b;
+        .btn-retry:hover {
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 0 0 24px rgba(200, 200, 220, 0.15);
+        }
+        .result-madeby {
+            margin-top: 30px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            font-family: var(--font-display);
         }
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 32px 20px 28px;
-                border-radius: 22px;
+        /* ============ 响应式 ============ */
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 2rem;
             }
-            .header h1 { font-size: 1.7rem; }
-            .header .icon-row { font-size: 40px; }
-            .question-text { font-size: 1.2rem; }
-            .option-btn { padding: 15px 16px; font-size: 0.95rem; gap: 12px; }
-            .option-btn .opt-letter { width: 36px; height: 36px; font-size: 0.85rem; }
-            .result-emoji { font-size: 80px; }
-            .result-member { font-size: 1.8rem; }
-            .result-band { font-size: 1.3rem; }
-            .btn { padding: 12px 24px; font-size: 0.9rem; }
+            .question-text {
+                font-size: 1.3rem;
+                margin-bottom: 28px;
+            }
+            .option-btn {
+                padding: 14px 18px;
+                font-size: 0.85rem;
+            }
+            .option-letter {
+                width: 24px;
+                height: 24px;
+                line-height: 24px;
+                font-size: 0.7rem;
+                margin-right: 10px;
+            }
+            .result-name {
+                font-size: 2.2rem;
+            }
+            .screen {
+                padding: 50px 18px 50px;
+            }
+            .progress-area {
+                padding: 12px 16px;
+                gap: 10px;
+            }
+            .progress-count {
+                font-size: 0.7rem;
+                min-width: 45px;
+            }
+            .result-runnerups {
+                gap: 16px;
+            }
+        }
+        @media (max-width: 400px) {
+            .welcome-title {
+                font-size: 1.6rem;
+            }
+            .question-text {
+                font-size: 1.1rem;
+                margin-bottom: 22px;
+            }
+            .option-btn {
+                padding: 12px 14px;
+                font-size: 0.78rem;
+                gap: 10px;
+            }
+            .option-letter {
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+                font-size: 0.65rem;
+                margin-right: 8px;
+            }
+            .result-name {
+                font-size: 1.7rem;
+            }
+            .btn-start {
+                padding: 13px 36px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- GitHub 小猫图标 -->
-    <a href="https://github.com/StonePumpkins/Rockti" target="_blank" class="github-link" title="View on GitHub">
-        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-    </a>
 
-    <div class="container" id="app">
-        <div class="header">
-            <div class="icon-row">🎸⚡🎤</div>
-            <h1>摇滚人格测试</h1>
-            <p class="subtitle">30道题 · 发现你灵魂深处的摇滚巨星</p>
+    <!-- 星空Canvas -->
+    <canvas id="starCanvas"></canvas>
+
+    <!-- 过渡闪光层 -->
+    <div class="transition-overlay" id="transitionOverlay"></div>
+
+    <!-- 顶部进度 -->
+    <div class="progress-area hidden" id="progressArea">
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
         </div>
-        <div class="progress-wrap">
-            <div class="progress-info">
-                <span id="progressLabel">第 1 / 30 题</span>
-                <span id="progressPercent">0%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-count"><span class="current" id="progressCurrent">1</span> / 30</div>
+    </div>
+
+    <!-- 主应用容器 -->
+    <div id="app-container">
+        <!-- 欢迎页 -->
+        <div class="screen active" id="screenWelcome">
+            <div class="welcome-inner">
+                <span class="welcome-icon">🎸</span>
+                <h1 class="welcome-title">你骨子里是<br>哪个<span class="accent">摇滚传奇</span>？</h1>
+                <div class="welcome-divider"></div>
+                <p class="welcome-desc">
+                    30道情景题，探测你灵魂深处的摇滚人格。<br>
+                    无需懂乐器，无需懂乐理——<br>
+                    只需诚实地选择，让答案自然浮现。
+                </p>
+                <button class="btn-start" id="btnStart" onclick="startQuiz()">开始测试</button>
             </div>
         </div>
-        <div id="contentArea"></div>
+
+        <!-- 题目页 -->
+        <div class="screen" id="screenQuestion">
+            <div class="question-inner">
+                <div class="question-number-indicator" id="questionNumberInd">第 1 题</div>
+                <div class="question-text" id="questionText"></div>
+                <ul class="options-list" id="optionsList"></ul>
+            </div>
+        </div>
+
+        <!-- 结果页 -->
+        <div class="screen" id="screenResult">
+            <div class="result-inner" id="resultInner"></div>
+        </div>
     </div>
 
     <script>
         (function() {
-            // 人物库（与之前相同，保留您指定的20位乐手）
-            const members = [
-                { id: 0, name: 'Freddie Mercury', band: 'Queen', role: '主唱/钢琴', emoji: '👑🎤',
-                    tagline: '你天生属于舞台，连日常都像在开演唱会。',
-                    desc: '你热情外向，总能成为朋友圈的焦点。你喜欢用幽默和夸张的表达感染周围的人，也愿意为在乎的人付出一切。对你来说，生活就是一场盛大的演出，而你永远是主角。',
-                    traits: ['华丽自信', '舞台体质', '温暖慷慨', '创意满格', '热爱人群'] },
-                { id: 1, name: 'John Lennon', band: 'The Beatles', role: '节奏吉他/主唱', emoji: '☮️🕊️',
-                    tagline: '理想主义从未在你心中熄灭。',
-                    desc: '你是个思想者，相信爱与和平可以改变世界。你的真诚有时显得尖锐，但这正是你迷人的地方。你兼具深刻的幽默和自省，朋友总能在你这里得到精神上的鼓励。',
-                    traits: ['理想主义', '和平使者', '尖锐诚实', '幽默自省', '思想深刻'] },
-                { id: 2, name: 'Jimmy Page', band: 'Led Zeppelin', role: '主音吉他', emoji: '🎸🌙',
-                    tagline: '神秘而强大的艺术家，用行动说话。',
-                    desc: '你不爱喧嚣，更喜欢沉浸在创作的世界里。你对细节有着近乎苛刻的追求，作品充满质感。低调的外表下藏着无比强大的专业能力，一旦出手，便让人过目不忘。',
-                    traits: ['神秘专注', '技术大师', '低调奢华', '艺术匠心', '完美主义'] },
-                { id: 3, name: 'Robert Plant', band: 'Led Zeppelin', role: '主唱', emoji: '🦁🔥',
-                    tagline: '狂野与柔情并存的自然之子。',
-                    desc: '你有一种未经雕琢的原始魅力，热爱自由，讨厌束缚。你可以像狮子一样充满力量，也能在月光下吟唱诗歌。朋友们迷恋你身上那种野性又神秘的气质。',
-                    traits: ['狂野自由', '原始魅力', '刚柔并济', '探索精神', '浪漫不羁'] },
-                { id: 4, name: 'Roger Waters', band: 'Pink Floyd', role: '贝斯/作曲', emoji: '🧱💭',
-                    tagline: '深沉的思想者，用作品拷问世界。',
-                    desc: '你总在思考更宏大的命题，对社会和人性有着敏锐的观察。你有时显得严肃，但你的深刻和执着能做出真正有分量的东西。你相信艺术应该刺痛人心，然后带来清醒。',
-                    traits: ['思想深邃', '社会关怀', '理性批判', '艺术野心', '严肃认真'] },
-                { id: 5, name: 'David Gilmour', band: 'Pink Floyd', role: '主音吉他/主唱', emoji: '🌌🎶',
-                    tagline: '少即是多，用最少的音符击中灵魂。',
-                    desc: '你内敛而深情，不善于用语言表达，但你的情感都藏在行动和作品里。你的力量在于克制和精准，总能在最关键的时刻给出最动人的一击。',
-                    traits: ['内敛深情', '精准克制', '情感深邃', '声音雕塑家', '沉稳可靠'] },
-                { id: 6, name: 'Keith Richards', band: 'The Rolling Stones', role: '节奏吉他', emoji: '💀🎸',
-                    tagline: '历经风浪，却永远屹立不倒的硬汉。',
-                    desc: '你身上有种顽强的生命力，看似玩世不恭，实则对热爱的事无比忠诚。你坚持自己的节奏，不在乎外界评价。朋友们信赖你，因为你知道什么才是真正重要的。',
-                    traits: ['顽强坚韧', '忠诚可靠', '酷劲十足', '我行我素', '历经沧桑'] },
-                { id: 7, name: 'John Bonham', band: 'Led Zeppelin', role: '鼓手', emoji: '🥁💥',
-                    tagline: '稳定又震撼的力量核心。',
-                    desc: '你做事雷厉风行，不拖泥带水。你话不多，但存在感极强，有你在的地方就有一种“稳了”的感觉。你用最直接的方式解决问题，力道十足，让人心服口服。',
-                    traits: ['力量可靠', '直来直往', '节奏之王', '保护欲强', '行动派'] },
-                { id: 8, name: 'Axl Rose', band: "Guns N' Roses", role: '主唱', emoji: '🌹💥',
-                    tagline: '激情燃烧的率真斗士。',
-                    desc: '你的情绪来得快去得也快，但每一刻都真实无比。你不在乎别人的眼光，按照自己的节奏生活。你有强烈的正义感和保护欲，率真的爆发力让所有人无法忽视你。',
-                    traits: ['激情澎湃', '率真直爽', '爆发力强', '无视规则', '正义热血'] },
-                { id: 9, name: 'Slash', band: "Guns N' Roses", role: '主音吉他', emoji: '🎩🎸',
-                    tagline: '低调到骨子里的酷神。',
-                    desc: '你不是那种喜欢讲废话的人，更多时候用行动证明自己。你重视专业，私底下默默打磨本领。一旦站上自己的“舞台”，就会爆发出令人惊叹的能量。',
-                    traits: ['低调酷帅', '技术过硬', '专注投入', '行动先于言语', '可靠伙伴'] },
-                { id: 10, name: 'Ozzy Osbourne', band: 'Black Sabbath', role: '主唱', emoji: '🦇🤘',
-                    tagline: '黑暗中的疯癫王子。',
-                    desc: '你有些古怪，甚至有点疯狂，但这种独特让你无法被复制。你对黑暗和超自然事物有着天然的好奇，但内心其实柔软可爱。朋友们都爱你的毫无保留和神经质。',
-                    traits: ['疯狂独特', '黑暗浪漫', '神经质', '内心柔软', '传奇色彩'] },
-                { id: 11, name: 'Angus Young', band: 'AC/DC', role: '主音吉他', emoji: '🎸🏫',
-                    tagline: '永远穿着校服的摇滚永动机。',
-                    desc: '你精力无限，仿佛永远不会老。你喜欢用最单纯的方式表达快乐和疯狂，不搞复杂，就是直接、好玩、起劲！有你在，气氛永远不会冷。',
-                    traits: ['活力永动', '单纯直接', '快乐摇滚', '精力无限', '舞台疯子'] },
-                { id: 12, name: 'Kurt Cobain', band: 'Nirvana', role: '主唱/吉他', emoji: '😢🎸',
-                    tagline: '敏感是你的超能力。',
-                    desc: '你看似平静，内心却波涛汹涌。你讨厌虚伪，更在乎真实的情感。有时你会觉得与世界格格不入，但正是这份细腻让你能深深理解他人的痛苦，并给予温柔的陪伴。',
-                    traits: ['敏感真诚', '反叛主流', '脆弱强韧', '艺术直觉', '独处充电'] },
-                { id: 13, name: 'Billie Joe Armstrong', band: 'Green Day', role: '主唱/吉他', emoji: '💚🎸',
-                    tagline: '用三和弦轰醒世界的朋克小子。',
-                    desc: '你精力充沛，有强烈的正义感，看不惯的事情就要大声说出来。你的愤怒都转化为了积极的行动和朗朗上口的旋律。你能把最严肃的题材变得像派对一样热血。',
-                    traits: ['正义热血', '旋律天才', '反叛有力', '精力旺盛', '直言不讳'] },
-                { id: 14, name: 'Thom Yorke', band: 'Radiohead', role: '主唱/多乐器', emoji: '🧠💡',
-                    tagline: '在焦虑中预见未来的先知。',
-                    desc: '你心思细腻，常常比别人更早察觉到问题。你喜欢独处思考，对科技和社会趋势有敏锐感知。偶尔的忧虑其实是你的天赋，能帮身边人看清方向。',
-                    traits: ['敏锐细腻', '忧思深刻', '技术敏感', '独立思考', '先知气质'] },
-                { id: 15, name: 'Robert Smith', band: 'The Cure', role: '主唱/吉他', emoji: '🕸️🖤',
-                    tagline: '哥特浪漫的忧伤织梦者。',
-                    desc: '你活在一个充满诗意的内心世界里，情感丰富而细腻。你的外表或许有些颓废或神秘，但内心却极度温柔浪漫。你能把悲伤变成一种美丽，治愈同样敏感的灵魂。',
-                    traits: ['哥特浪漫', '诗意忧伤', '温柔细腻', '美学独特', '治愈系'] },
-                { id: 16, name: 'Patti Smith', band: 'Patti Smith Group', role: '诗人/主唱', emoji: '📖🌹',
-                    tagline: '诗人的柔软与斗士的坚韧。',
-                    desc: '你热爱阅读和思考，对美有自己独特的见解。你不随大流，敢于表达自己的观点，即使那意味着孤独。你身上有一种沉静而坚定的力量，让人忍不住想靠近。',
-                    traits: ['诗意思考', '独立坚韧', '品味独特', '不惧孤独', '精神领袖'] },
-                { id: 17, name: 'Liam Gallagher', band: 'Oasis', role: '主唱', emoji: '🍺🎤',
-                    tagline: '老子天下第一的傲娇巨星。',
-                    desc: '你自信爆棚，有时候甚至有点欠揍，但你就是有资本这么狂。你的态度鲜明，从不拐弯抹角。爱你的人爱死你的纯粹和搞笑，你的存在就是一股毫不讲理的生命力。',
-                    traits: ['狂妄自信', '纯粹直率', '不羁放纵', '天生明星', '黑色幽默'] },
-                { id: 18, name: 'Noel Gallagher', band: 'Oasis', role: '主音吉他/作曲', emoji: '🎸🧠',
-                    tagline: '金句频出的旋律天才。',
-                    desc: '你头脑清醒，才华横溢，总能一针见血地指出问题。你的创造力旺盛，同时对质量有着极高的标准。你讨厌愚蠢，喜欢掌控局面，但内心其实是个有点可爱的控制狂。',
-                    traits: ['才华横溢', '金句连篇', '控制欲强', '旋律大师', '冷静毒舌'] },
-                { id: 19, name: 'Billy Corgan', band: 'The Smashing Pumpkins', role: '主唱/吉他', emoji: '🎃🎸',
-                    tagline: '野心勃勃的另类建筑师。',
-                    desc: '你不满足于平凡，渴望建立自己的音乐帝国。你的情感丰沛而复杂，作品充满了戏剧性的光影对比。你可以很脆弱，也可以很专制，但一切都是为了追求心中的完美。',
-                    traits: ['野心勃勃', '情感复杂', '戏剧张力', '完美主义', '另类建筑师'] }
-            ];
+            // ==================== 星空Canvas ====================
+            const canvas = document.getElementById('starCanvas');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            let shootingStars = [];
+            let animId;
+            const STAR_COUNT = 180;
 
-            // 题库（30道贴近生活，纹身题已替换）
-            const questions = [{
-                q: '周末睡到自然醒，你的第一个念头是？',
-                options: [
-                    { text: '拉开窗帘，让阳光洒满房间，感觉今天又能干翻世界！', scores: [[0,2],[11,2],[13,1]] },
-                    { text: '躺在床上再赖一会儿，刷手机看看有什么新鲜事。', scores: [[14,2],[15,2],[9,1]] },
-                    { text: '开始计划今天的待办清单，不想浪费一分一秒。', scores: [[4,2],[18,2],[7,1]] },
-                    { text: '继续窝在被子里，享受难得的宁静与独处。', scores: [[12,2],[5,2],[1,1]] },
-                ],
-            }, {
-                q: '朋友突然放鸽子，多出一整个下午，你会？',
-                options: [
-                    { text: '立刻找另一波人出来，绝不浪费假期。', scores: [[0,2],[17,2],[11,1]] },
-                    { text: '无所谓，正好自己去逛逛书店或唱片店。', scores: [[16,2],[14,2],[2,1]] },
-                    { text: '打开电脑，完成那个拖了很久的个人项目。', scores: [[19,2],[9,2],[4,1]] },
-                    { text: '宅在家里看电影/打游戏，享受意外得来的休息日。', scores: [[12,2],[15,2],[10,1]] },
-                ],
-            }, {
-                q: '同事/同学在群里激烈争论，你通常？',
-                options: [
-                    { text: '默默围观，看大家各抒己见，觉得挺有意思。', scores: [[14,2],[18,2],[9,1]] },
-                    { text: '站出来说句公道话，试图让双方冷静。', scores: [[1,2],[16,2],[5,1]] },
-                    { text: '如果涉及自己的专业领域，就甩出数据和事实。', scores: [[4,2],[2,2],[19,1]] },
-                    { text: '直接表达自己的立场，不怕得罪人。', scores: [[8,2],[17,2],[13,1]] },
-                ],
-            }, {
-                q: '心情烦躁的时候，哪种方式最能让你平静？',
-                options: [
-                    { text: '戴上耳机，把音量开大，沉浸在音乐的世界里。', scores: [[5,2],[15,2],[2,1]] },
-                    { text: '出去跑几圈或去健身房，让身体累到没情绪。', scores: [[11,2],[7,2],[13,1]] },
-                    { text: '找最亲密的那个朋友，把烦恼一口气全说出来。', scores: [[0,2],[6,2],[16,1]] },
-                    { text: '点上一根香薰蜡烛，写写日记或看看书。', scores: [[16,2],[1,2],[12,1]] },
-                ],
-            }, {
-                q: '去KTV唱歌，你通常会？',
-                options: [
-                    { text: '第一个冲上去点歌，从开始嗨到散场。', scores: [[0,3],[17,2],[11,1]] },
-                    { text: '专点那些高难度/有态度的歌，展示真实水平。', scores: [[8,2],[19,2],[3,1]] },
-                    { text: '坐在角落默默听，被cue到才勉强唱一首。', scores: [[12,2],[14,2],[5,1]] },
-                    { text: '负责帮大家点歌、调动气氛，唱不唱不重要。', scores: [[6,2],[13,2],[18,1]] },
-                ],
-            }, {
-                q: '你对时尚的态度是？',
-                options: [
-                    { text: '喜欢华丽、复古或戏剧化的单品，穿出个性。', scores: [[0,2],[3,2],[15,1]] },
-                    { text: '舒适优先，基本款为主，但一定要有件皮衣或靴子。', scores: [[6,2],[9,2],[17,1]] },
-                    { text: '随心所欲，今天波西米亚明天运动风，看心情。', scores: [[16,2],[14,2],[19,1]] },
-                    { text: '不刻意追求潮流，但会在配饰上花小心思。', scores: [[18,2],[5,2],[1,1]] },
-                ],
-            }, {
-                q: '工作中/学习上遇到瓶颈，你的策略是？',
-                options: [
-                    { text: '暂时放下，去做点完全不相干的事，让灵感自己上门。', scores: [[3,2],[11,2],[16,1]] },
-                    { text: '死磕到底，不相信有自己攻克不了的难题。', scores: [[8,2],[19,2],[4,1]] },
-                    { text: '找有经验的前辈或朋友聊聊，听听不同视角。', scores: [[6,2],[13,2],[1,1]] },
-                    { text: '先休息一下睡一觉，相信明天头脑会更清醒。', scores: [[12,2],[15,2],[5,1]] },
-                ],
-            }, {
-                q: '旅行时，你更看重什么？',
-                options: [
-                    { text: '深入当地的独立咖啡馆、地下酒吧和音乐现场。', scores: [[2,2],[16,2],[19,1]] },
-                    { text: '打卡著名的自然奇观，在山海间感受壮阔。', scores: [[3,2],[7,2],[10,1]] },
-                    { text: '提前做好详细攻略，把经典景点和美食一网打尽。', scores: [[18,2],[4,2],[17,1]] },
-                    { text: '不做计划，随意漫步，偶遇未知的惊喜。', scores: [[14,2],[12,2],[6,1]] },
-                ],
-            }, {
-                q: '和朋友一起吃饭，你更倾向于？',
-                options: [
-                    { text: '火锅或烧烤，热闹、互动性强的。', scores: [[0,2],[11,2],[8,1]] },
-                    { text: '环境安静有格调的餐厅，适合深度聊天。', scores: [[16,2],[15,2],[1,1]] },
-                    { text: '无所谓，大家决定就好，我只负责开心。', scores: [[6,2],[13,2],[10,1]] },
-                    { text: '路边摊或大排档，要的就是那种烟火气。', scores: [[7,2],[17,2],[9,1]] },
-                ],
-            }, {
-                q: '你觉得自己更像哪种动物？',
-                options: [
-                    { text: '狮子——自带气场，喜欢引领和保护他人。', scores: [[0,2],[7,2],[8,1]] },
-                    { text: '猫——独立、优雅，需要自己的空间。', scores: [[5,2],[14,2],[9,1]] },
-                    { text: '狗——忠诚、热情，给身边人带来快乐。', scores: [[13,2],[11,2],[6,1]] },
-                    { text: '狼——重视团队，但保留了野性和自由意志。', scores: [[3,2],[10,2],[12,1]] },
-                ],
-            }, {
-                q: '看到朋友圈有人炫富或凡尔赛，你的反应是？',
-                options: [
-                    { text: '内心毫无波动，甚至想点个赞看戏。', scores: [[6,2],[18,2],[14,1]] },
-                    { text: '刷过去，我的生活不需要和别人比较。', scores: [[5,2],[9,2],[12,1]] },
-                    { text: '和朋友私下吐槽一下，然后继续自己的事。', scores: [[17,2],[8,2],[11,1]] },
-                    { text: '反思一下自己是不是也可以定个更高的目标。', scores: [[19,2],[4,2],[10,1]] },
-                ],
-            }, {
-                q: '如果学一门乐器，你会选？',
-                options: [
-                    { text: '吉他——随时随地都可以来一段，酷。', scores: [[2,2],[9,2],[12,1]] },
-                    { text: '架子鼓——宣泄情绪的最佳方式。', scores: [[7,2],[13,2],[11,1]] },
-                    { text: '钢琴/键盘——优雅，能表达最深的情感。', scores: [[19,2],[15,2],[16,1]] },
-                    { text: '贝斯——低调但不可或缺，掌握整个律动。', scores: [[4,2],[6,2],[18,1]] },
-                ],
-            }, {
-                q: '面对一项新的挑战，你的态度通常是？',
-                options: [
-                    { text: '兴奋！摩拳擦掌，恨不得立刻开始。', scores: [[0,2],[11,2],[13,1]] },
-                    { text: '谨慎评估风险，做好准备再一步一步来。', scores: [[14,2],[5,2],[18,1]] },
-                    { text: '只要认定有价值，就会全力以赴，不计结果。', scores: [[8,2],[19,2],[3,1]] },
-                    { text: '先观望一下，看看别人怎么做再说。', scores: [[12,2],[6,2],[16,1]] },
-                ],
-            }, {
-                q: '你更享受哪种类型的社交活动？',
-                options: [
-                    { text: '大型音乐节或派对，人越多越好玩。', scores: [[0,2],[17,2],[11,1]] },
-                    { text: '几个好友在家中聚会，做饭、聊天、听音乐。', scores: [[6,2],[16,2],[1,1]] },
-                    { text: '独自一人去逛展览、看演出，享受精神满足。', scores: [[5,2],[14,2],[15,1]] },
-                    { text: '和志同道合的小团体一起完成某个项目或创作。', scores: [[2,2],[19,2],[4,1]] },
-                ],
-            }, {
-                q: '对待失恋或重大打击，你的疗伤模式是？',
-                options: [
-                    { text: '把自己关起来，用音乐和眼泪冲刷一切。', scores: [[12,2],[15,2],[19,1]] },
-                    { text: '立刻投入新的爱好或工作，让自己忙到没空想。', scores: [[4,2],[8,2],[7,1]] },
-                    { text: '和朋友通宵聊天，在陪伴中慢慢痊愈。', scores: [[0,2],[17,2],[6,1]] },
-                    { text: '把痛苦写成文字或创作，让情绪变成作品。', scores: [[16,2],[14,2],[1,1]] },
-                ],
-            }, {
-                q: '你对“规则”的看法是？',
-                options: [
-                    { text: '规则是必要的，但过时的规则必须被打破。', scores: [[8,2],[13,2],[3,1]] },
-                    { text: '尊重规则，但会在允许范围内寻求最大自由。', scores: [[18,2],[9,2],[5,1]] },
-                    { text: '规则？我更喜欢自己创造一套。', scores: [[10,2],[17,2],[19,1]] },
-                    { text: '懒得管规则，只要不伤害别人，怎么舒服怎么来。', scores: [[12,2],[11,2],[6,1]] },
-                ],
-            }, {
-                q: '你的手机/电脑桌面是？',
-                options: [
-                    { text: '纯黑或极简壁纸，不喜欢花里胡哨。', scores: [[9,2],[14,2],[18,1]] },
-                    { text: '自然风景或宇宙星空的壮丽图片。', scores: [[3,2],[5,2],[15,1]] },
-                    { text: '喜欢的乐队或艺术家的照片。', scores: [[0,2],[16,2],[2,1]] },
-                    { text: '朋友/家人的合影，很温馨。', scores: [[6,2],[13,2],[1,1]] },
-                ],
-            }, {
-                q: '你对金钱的态度是？',
-                options: [
-                    { text: '够用就好，更看重自由和体验。', scores: [[3,2],[12,2],[6,1]] },
-                    { text: '努力赚钱是为了更好地照顾身边人。', scores: [[13,2],[1,2],[7,1]] },
-                    { text: '经济独立才能人格独立，所以一直很拼。', scores: [[8,2],[16,2],[19,1]] },
-                    { text: '享受生活，愿意为品质和品味买单。', scores: [[0,2],[17,2],[18,1]] },
-                ],
-            }, {
-                q: '以下哪种情况最让你感到压力？',
-                options: [
-                    { text: '被要求在很多人面前即兴发言或表演。', scores: [[12,2],[5,2],[9,1]] },
-                    { text: '事情的发展完全脱离自己的掌控。', scores: [[19,2],[4,2],[8,1]] },
-                    { text: '周围人际关系复杂，充满勾心斗角。', scores: [[1,2],[15,2],[14,1]] },
-                    { text: '长期重复无聊的工作，没有创造空间。', scores: [[14,2],[6,2],[11,1]] },
-                ],
-            }, {
-                q: '你更欣赏哪句名言？',
-                options: [
-                    { text: '“人生太短，别浪费在平庸上。”', scores: [[0,2],[17,2],[10,1]] },
-                    { text: '“与其苟延残喘，不如纵情燃烧。”', scores: [[12,2],[8,2],[7,1]] },
-                    { text: '“做你自己，因为别人都有人做了。”', scores: [[16,2],[15,2],[9,1]] },
-                    { text: '“我们就是我们一直在等待的人。”', scores: [[1,2],[18,2],[5,1]] },
-                ],
-            }, {
-                q: '当你取得一项成就时，第一反应通常是？',
-                options: [
-                    { text: '立刻和身边的人分享喜悦，大家开心才是真的开心。', scores: [[0,2],[13,2],[6,1]] },
-                    { text: '觉得“这没什么”，然后默默朝下一个目标前进。', scores: [[19,2],[9,2],[4,1]] },
-                    { text: '很高兴，但很快会思考还有哪些不足。', scores: [[18,2],[14,2],[5,1]] },
-                    { text: '好好犒劳自己一下，买喜欢的东西或吃顿大餐。', scores: [[17,2],[11,2],[8,1]] },
-                ],
-            }, {
-                q: '如果你突然得到一笔奖金，你会优先用来？',
-                options: [
-                    { text: '升级你的音乐装备或工作室。', scores: [[2,2],[19,2],[9,1]] },
-                    { text: '计划一次说走就走的旅行。', scores: [[3,2],[12,2],[16,1]] },
-                    { text: '请亲朋好友大吃一顿，分享快乐。', scores: [[6,2],[13,2],[0,1]] },
-                    { text: '存起来作为未来项目的启动资金。', scores: [[1,2],[4,2],[18,1]] },
-                ],
-            }, {
-                q: '看电影时，哪种类型更吸引你？',
-                options: [
-                    { text: '传记片或纪录片，真实的故事最有力量。', scores: [[1,2],[16,2],[4,1]] },
-                    { text: '科幻或奇幻，逃离现实去看全新的世界。', scores: [[14,2],[10,2],[19,1]] },
-                    { text: '硬核的犯罪或悬疑片，喜欢烧脑的剧情。', scores: [[9,2],[18,2],[15,1]] },
-                    { text: '温馨的喜剧或爱情片，让我感觉人间值得。', scores: [[13,2],[6,2],[0,1]] },
-                ],
-            }, {
-                q: '你的理想住所是？',
-                options: [
-                    { text: '城市中心的高层公寓，俯瞰灯火辉煌。', scores: [[0,2],[17,2],[19,1]] },
-                    { text: '郊外或山里的房子，有院子，安静不被打扰。', scores: [[12,2],[5,2],[16,1]] },
-                    { text: '老城区有历史感的建筑，充满故事和烟火气。', scores: [[3,2],[6,2],[10,1]] },
-                    { text: '充满科技感的智能住宅，一切自动化。', scores: [[14,2],[9,2],[18,1]] },
-                ],
-            }, {
-                q: '朋友有难，你会怎么帮忙？',
-                options: [
-                    { text: '二话不说，直接行动——借钱、出力、找人脉。', scores: [[7,2],[8,2],[13,1]] },
-                    { text: '耐心倾听，陪在身边，情绪价值给满。', scores: [[15,2],[16,2],[12,1]] },
-                    { text: '理性分析，帮TA理清问题，制定解决方案。', scores: [[4,2],[18,2],[19,1]] },
-                    { text: '用幽默或搞怪的方式让TA先笑起来。', scores: [[11,2],[17,2],[0,1]] },
-                ],
-            }, {
-                q: '你对“怀旧”的态度是？',
-                options: [
-                    { text: '偶尔听听老歌、看看老照片，但更期待未来。', scores: [[6,2],[13,2],[18,1]] },
-                    { text: '恋旧，经典永远无法被超越。', scores: [[2,2],[9,2],[3,1]] },
-                    { text: '往前看，不回头，过去就让它过去。', scores: [[8,2],[14,2],[17,1]] },
-                    { text: '我喜欢把过去的元素融合到现在的生活中。', scores: [[1,2],[5,2],[19,1]] },
-                ],
-            }, {
-                q: '你认为自己的超能力是什么？',
-                options: [
-                    { text: '感染力——我能轻易影响周围人的情绪。', scores: [[0,2],[17,2],[11,1]] },
-                    { text: '洞察力——我能看透事物的本质。', scores: [[14,2],[4,2],[16,1]] },
-                    { text: '执行力——只要我想做，就一定能做成。', scores: [[8,2],[7,2],[19,1]] },
-                    { text: '创造力——我总能找到新的角度和办法。', scores: [[2,2],[18,2],[3,1]] },
-                ],
-            }, {
-                q: '你更习惯哪种沟通方式？',
-                options: [
-                    { text: '面对面，能看见表情和肢体语言才踏实。', scores: [[0,2],[6,2],[13,1]] },
-                    { text: '文字沟通，可以字斟句酌，表达更精准。', scores: [[16,2],[5,2],[14,1]] },
-                    { text: '电话或语音，比文字快，比见面省事。', scores: [[7,2],[8,2],[11,1]] },
-                    { text: '看情况，对什么人用什么方式。', scores: [[9,2],[12,2],[18,1]] },
-                ],
-            }, {
-                q: '如果有一笔闲钱和时间，你会用来？',
-                options: [
-                    { text: '投资自己——学新技能、健身、提升形象。', scores: [[19,2],[8,2],[2,1]] },
-                    { text: '立刻订机票，去那个一直想去的地方旅行。', scores: [[3,2],[12,2],[17,1]] },
-                    { text: '存起来，看着数字增长给我安全感。', scores: [[4,2],[9,2],[14,1]] },
-                    { text: '买下那件心仪已久的乐器/相机/艺术品。', scores: [[5,2],[15,2],[1,1]] },
-                ],
-            }, {
-                q: '最后一道题：你认为生活是什么？',
-                options: [
-                    { text: '一场盛大的冒险，我要活得轰轰烈烈。', scores: [[0,2],[8,2],[3,1]] },
-                    { text: '一首未完成的歌，需要我自己填词作曲。', scores: [[14,2],[19,2],[16,1]] },
-                    { text: '一段不知终点的旅程，重要的是沿途的风景和同行的人。', scores: [[6,2],[13,2],[1,1]] },
-                    { text: '一次不断认识自己的过程，痛苦与美丽并存。', scores: [[12,2],[15,2],[4,1]] },
-                ],
-            }];
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                initStars();
+            });
 
-            // 状态管理与交互
-            let currentQuestion = 0;
-            let scores = new Array(members.length).fill(0);
-            let answered = false;
-
-            const contentArea = document.getElementById('contentArea');
-            const progressFill = document.getElementById('progressFill');
-            const progressLabel = document.getElementById('progressLabel');
-            const progressPercent = document.getElementById('progressPercent');
-
-            function updateProgress() {
-                const pct = Math.round((currentQuestion / questions.length) * 100);
-                progressFill.style.width = pct + '%';
-                progressLabel.textContent = `第 ${currentQuestion + 1} / ${questions.length} 题`;
-                progressPercent.textContent = pct + '%';
+            function initStars() {
+                stars = [];
+                for (let i = 0; i < STAR_COUNT; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 2.2 + 0.4,
+                        twinkleSpeed: Math.random() * 0.015 + 0.004,
+                        twinkleOffset: Math.random() * Math.PI * 2,
+                        baseAlpha: Math.random() * 0.7 + 0.3,
+                        driftX: (Math.random() - 0.5) * 0.15,
+                        driftY: (Math.random() - 0.5) * 0.1,
+                    });
+                }
+                stars.sort((a, b) => a.r - b.r);
             }
 
-            function renderQuestion() {
-                if (currentQuestion >= questions.length) {
-                    showResult();
+            function spawnShootingStar() {
+                if (Math.random() < 0.012 && shootingStars.length < 2) {
+                    const fromLeft = Math.random() > 0.5;
+                    shootingStars.push({
+                        x: fromLeft ? Math.random() * canvas.width * 0.3 : canvas.width * 0.7 + Math.random() *
+                            canvas.width * 0.3,
+                        y: Math.random() * canvas.height * 0.35,
+                        vx: (fromLeft ? 1 : -1) * (Math.random() * 2.5 + 2),
+                        vy: Math.random() * 1.8 + 0.8,
+                        life: 1,
+                        decay: Math.random() * 0.025 + 0.018,
+                        trail: [],
+                        maxTrail: Math.floor(Math.random() * 35 + 20),
+                    });
+                }
+            }
+
+            function updateShootingStars() {
+                for (let i = shootingStars.length - 1; i >= 0; i--) {
+                    const ss = shootingStars[i];
+                    ss.trail.push({ x: ss.x, y: ss.y, life: ss.life });
+                    if (ss.trail.length > ss.maxTrail) ss.trail.shift();
+                    ss.x += ss.vx;
+                    ss.y += ss.vy;
+                    ss.life -= ss.decay;
+                    if (ss.life <= 0 || ss.x < -50 || ss.x > canvas.width + 50 || ss.y > canvas.height + 50) {
+                        shootingStars.splice(i, 1);
+                    }
+                }
+            }
+
+            function drawStars(time) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // 深蓝渐变底色
+                const grad = ctx.createRadialGradient(canvas.width * 0.4, canvas.height * 0.35, 0, canvas.width * 0.5,
+                    canvas.height * 0.5, Math.max(canvas.width, canvas.height) * 0.75);
+                grad.addColorStop(0, '#0e2540');
+                grad.addColorStop(0.5, '#091a2d');
+                grad.addColorStop(1, '#040d18');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // 星星
+                for (const s of stars) {
+                    const alpha = s.baseAlpha + Math.sin(time * s.twinkleSpeed + s.twinkleOffset) * 0.3;
+                    const clampedAlpha = Math.max(0.15, Math.min(1, alpha));
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(210,225,245,${clampedAlpha})`;
+                    ctx.fill();
+                    // 微光晕
+                    if (s.r > 1.4) {
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, s.r * 2.5, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(180,200,230,${clampedAlpha*0.18})`;
+                        ctx.fill();
+                    }
+                    // 漂移
+                    s.x += s.driftX * 0.02;
+                    s.y += s.driftY * 0.02;
+                    if (s.x < -10) s.x = canvas.width + 10;
+                    if (s.x > canvas.width + 10) s.x = -10;
+                    if (s.y < -10) s.y = canvas.height + 10;
+                    if (s.y > canvas.height + 10) s.y = -10;
+                }
+
+                // 流星
+                for (const ss of shootingStars) {
+                    if (ss.trail.length > 1) {
+                        for (let j = 1; j < ss.trail.length; j++) {
+                            const t = ss.trail[j];
+                            const alpha = (j / ss.trail.length) * ss.life * 0.8;
+                            ctx.beginPath();
+                            ctx.arc(t.x, t.y, 1.2, 0, Math.PI * 2);
+                            ctx.fillStyle = `rgba(255,240,220,${Math.max(0,alpha)})`;
+                            ctx.fill();
+                        }
+                    }
+                    // 头部
+                    ctx.beginPath();
+                    ctx.arc(ss.x, ss.y, 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,250,240,${Math.max(0,ss.life)})`;
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(ss.x, ss.y, 6, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,240,220,${Math.max(0,ss.life*0.35)})`;
+                    ctx.fill();
+                }
+            }
+
+            function animateStars(time) {
+                spawnShootingStar();
+                updateShootingStars();
+                drawStars(time);
+                animId = requestAnimationFrame(animateStars);
+            }
+
+            initStars();
+            animId = requestAnimationFrame(animateStars);
+
+            // ==================== 数据定义 ====================
+            const rockStars = {
+                'freddie_mercury': {
+                    name: 'Freddie Mercury',
+                    band: 'Queen',
+                    emoji: '👑',
+                    desc: '你拥有无法抑制的舞台魅力和对生命的热爱。在人群中你自然地成为焦点，用幽默与戏剧性点燃每一个房间。你相信“人生苦短，必须尽兴”，对美有着执着的追求，无论是视觉还是情感，你都希望达到极致。你的自信有时被误解为张扬，但了解你的人都知道，你内心深处的慷慨与温暖才是真正的底色。',
+                },
+                'john_lennon': {
+                    name: 'John Lennon',
+                    band: 'The Beatles',
+                    emoji: '🕊️',
+                    desc: '你是一个理想主义者，骨子里带着反叛精神。你对世界有着敏锐的观察和深刻的思考，不满足于表面答案。你敢于质疑权威，用尖锐的诚实刺破虚伪。同时你也有着柔软的一面，相信爱可以改变一切。你的矛盾性让你迷人——既犀利又温柔，既愤世嫉俗又心怀希望。',
+                },
+                'jimmy_page': {
+                    name: 'Jimmy Page',
+                    band: 'Led Zeppelin',
+                    emoji: '🔮',
+                    desc: '你是一个掌控全局的神秘主义者。你不喜欢把底牌亮出来，总是在暗中编织复杂的计划。你对细节有着偏执的追求，任何经你手的事物都必须达到你心中的标准。你的魅力不在于喧哗，而在于那种让人想要探索的深邃。你知道真正的力量来自掌控，而非炫耀。',
+                },
+                'robert_plant': {
+                    name: 'Robert Plant',
+                    band: 'Led Zeppelin',
+                    emoji: '🦁',
+                    desc: '你是一头自由的金色雄狮，自带让人无法忽视的性感能量。你热爱冒险，无论是物理上的远行还是精神上的探索。你的魅力浑然天成，从不刻意。对你来说，生命就是一场盛大的旅程，你要用全部感官去体验它。你的热情具有感染力，让身边的人也想要挣脱枷锁。',
+                },
+                'roger_waters': {
+                    name: 'Roger Waters',
+                    band: 'Pink Floyd',
+                    emoji: '🧠',
+                    desc: '你是一个深沉的思想者，内心承载着对世界的严肃关怀。你不擅长轻松闲聊，但一旦触及你在意的议题，你的洞察力令人震撼。你可能有些孤僻，因为不是所有人都能跟上你的思维深度。你的情绪像深海，表面平静，内里却有强大的暗流。你创作（或做事）的目的从来不是为了取悦，而是为了表达真实。',
+                },
+                'david_gilmour': {
+                    name: 'David Gilmour',
+                    band: 'Pink Floyd',
+                    emoji: '🌅',
+                    desc: '你优雅而沉稳，像黄昏时分的温暖光线。你不急于表达，但每一次出手都精准而动人。你懂得“少即是多”的哲学，用克制营造出比喧嚣更强大的力量。你的感性不浮于表面，而是在细微处流露。你是一个让人感到安心却又充满深度的人。',
+                },
+                'keith_richards': {
+                    name: 'Keith Richards',
+                    band: 'The Rolling Stones',
+                    emoji: '🥃',
+                    desc: '你是酷的化身——不是刻意营造的酷，而是骨子里的不羁。你按自己的节奏生活，外界的规则对你来说只是参考。你经历过风雨，但从未被打倒，反而在磨砺中变得更加坚韧。你的随性中藏着智慧，看似漫不经心，实则对重要的事有着惊人的专注和忠诚。',
+                },
+                'john_bonham': {
+                    name: 'John Bonham',
+                    band: 'Led Zeppelin',
+                    emoji: '💥',
+                    desc: '你拥有原始而澎湃的生命力。你喜欢用行动而非言语来表达自己，当你发力时，整个空间都能感受到你的存在。你享受生活的感官愉悦，不喜欢把事情搞得太复杂。你的力量感是天生的，同时你也有着让人意外的细腻——在狂放之外，你懂得节奏与分寸。',
+                },
+                'axl_rose': {
+                    name: 'Axl Rose',
+                    band: "Guns N' Roses",
+                    emoji: '🔥',
+                    desc: '你是一团行走的火焰——充满激情、不可预测。你的标准极高，对自己和他人都有着近乎苛刻的要求。当事情不如预期时，你的怒火可能会爆发，但这一切都源于你对完美的执着。你有着惊人的能量和魅力，即使你的脾气让人头疼，人们也无法不被你的光芒吸引。',
+                },
+                'slash': {
+                    name: 'Slash',
+                    band: "Guns N' Roses",
+                    emoji: '🎩',
+                    desc: '你低调、专注，用行动代替言语。你不追求成为焦点，但你的存在感却无法被忽视。你有着自己的节奏和步调，不随波逐流。在纷乱的环境中，你保持着一份冷静和酷感。你相信实力会说话，所以从不费心解释自己。你的神秘感让人更加想要了解你。',
+                },
+                'ozzy_osbourne': {
+                    name: 'Ozzy Osbourne',
+                    band: 'Black Sabbath',
+                    emoji: '🦇',
+                    desc: '你有着疯狂的灵魂，但骨子里却意外地可爱。你对黑暗和禁忌有着天然的好奇心，喜欢探索常规之外的世界。你可能有些混乱、有些不可预测，但你的真实让人无法讨厌你。你在混沌中自有一套生存哲学，用幽默感化解了许多本该沉重的东西。',
+                },
+                'angus_young': {
+                    name: 'Angus Young',
+                    band: 'AC/DC',
+                    emoji: '⚡',
+                    desc: '你精力充沛，像一枚永不停歇的电池。你的活力具有传染性，有你在的场合永远不会沉闷。你保持着一颗顽童的心，拒绝被成年的乏味同化。你对热爱的事物全情投入，那股纯粹的劲头让人动容。你知道如何用最简单的能量点燃最热烈的火焰。',
+                },
+                'kurt_cobain': {
+                    name: 'Kurt Cobain',
+                    band: 'Nirvana',
+                    emoji: '💙',
+                    desc: '你敏感、真实，对世界的虚伪有着本能的反感。你的情绪丰富而深刻，有时甚至让你自己难以承受。你不追求浮华的表面，更看重事物本质的真实。你的脆弱与力量并存，这种矛盾让你格外迷人。你用诚实面对自己的阴暗面，也因此更能理解他人的痛苦。',
+                },
+                'billie_joe': {
+                    name: 'Billie Joe Armstrong',
+                    band: 'Green Day',
+                    emoji: '✊',
+                    desc: '你充满朋克的能量和对正义的渴望。你对不公有着敏锐的嗅觉，不会沉默地接受不合理的事。你用行动和声音表达立场，即使有时候看起来很冲动。你的活力让你永远年轻，你对生活的热情具有唤醒他人的力量。你不怕把心里的话大声说出来。',
+                },
+                'thom_yorke': {
+                    name: 'Thom Yorke',
+                    band: 'Radiohead',
+                    emoji: '🌀',
+                    desc: '你是一个独特而焦虑的灵魂，对现代世界的荒诞有着超乎常人的感知。你的思维不遵循常规路径，常常跳出框架看问题。你可能显得有些神经质，但这是因为你比大多数人更敏锐地感受到了时代的暗流。你的艺术气质让你在人群中与众不同，你的内省让你拥有深度。',
+                },
+                'robert_smith': {
+                    name: 'Robert Smith',
+                    band: 'The Cure',
+                    emoji: '🌙',
+                    desc: '你浪漫而忧郁，情感丰富得像一片深海。你对美有着独特的感知，尤其被那些带着哀愁的美所吸引。你不害怕展示自己的脆弱，反而将其化为一种力量。你的温柔和敏感让你成为极好的倾听者，而你的创造力则是你表达内心世界的最佳出口。',
+                },
+                'patti_smith': {
+                    name: 'Patti Smith',
+                    band: 'Patti Smith Group',
+                    emoji: '📖',
+                    desc: '你是一位诗人，一位思想上的革命者。你将知性与摇滚精神完美融合，用文字和行动挑战常规。你对艺术有着虔诚的信仰，相信表达的力量可以改变世界。你独立、坚韧，不依附于任何人。你的智慧是你最大的魅力，而你毫不妥协的态度让人敬佩。',
+                },
+                'liam_gallagher': {
+                    name: 'Liam Gallagher',
+                    band: 'Oasis',
+                    emoji: '😎',
+                    desc: '你狂妄、直率，态度鲜明到让人无法忽视。你从不拐弯抹角，想什么就说什么，这种赤裸的真诚虽然有时让人尴尬，但也让人信任。你有着天生的酷感，不需要任何修饰就自带气场。你相信自己的直觉，不轻易被外界动摇。你的自信是一种宣言。',
+                },
+                'noel_gallagher': {
+                    name: 'Noel Gallagher',
+                    band: 'Oasis',
+                    emoji: '🎯',
+                    desc: '你才华横溢且深知这一点。你的自信建立在实力之上，所以显得理所当然。你对事物有着犀利的判断，不太有耐心应付愚蠢的问题。你的思维敏捷，言语间常常带着机智的讽刺。在混乱中，你是那个能够理清头绪、拿出方案的人。你的标准很高，因为你交付的成果也从不让人失望。',
+                },
+                'billy_corgan': {
+                    name: 'Billy Corgan',
+                    band: 'The Smashing Pumpkins',
+                    emoji: '🌓',
+                    desc: '你野心勃勃，内心世界复杂而丰富。你对艺术有着宏大的愿景，不满足于小打小闹。你的情感光谱很宽，从极致的温柔到激烈的愤怒都能在你的表达中共存。你可能有些争议性，因为你不怕表达强烈的观点。你的复杂性让你无法被简单定义，而这正是你的魅力所在。',
+                },
+            };
+
+            // 30道题目 - 每道题4个选项，每个选项映射到摇滚明星
+            const questions = [{
+                q: '周五晚上，你理想的夜晚是？',
+                options: [
+                    { text: '组织一场派对，你是当晚的绝对主角', map: 'freddie_mercury' },
+                    { text: '在家独自听音乐、思考人生', map: 'roger_waters' },
+                    { text: '和三五好友去小酒馆喝到深夜', map: 'keith_richards' },
+                    { text: '窝在沙发里写写画画，沉浸在自己的世界', map: 'kurt_cobain' },
+                ],
+            }, {
+                q: '朋友形容你时会最先提到什么？',
+                options: [
+                    { text: '“有你在就永远不会无聊”', map: 'freddie_mercury' },
+                    { text: '“你有时候真的挺神秘的”', map: 'jimmy_page' },
+                    { text: '“你说话也太直接了吧”', map: 'liam_gallagher' },
+                    { text: '“你比看上去要敏感得多”', map: 'robert_smith' },
+                ],
+            }, {
+                q: '面对一个让你愤怒的人，你倾向于？',
+                options: [
+                    { text: '当场让他知道你的态度，不藏着掖着', map: 'axl_rose' },
+                    { text: '冷处理，但心里已经把他拉黑了', map: 'david_gilmour' },
+                    { text: '用幽默讽刺的方式让他自讨没趣', map: 'noel_gallagher' },
+                    { text: '先观察，找到最佳时机再精准反击', map: 'jimmy_page' },
+                ],
+            }, {
+                q: '你更相信哪种生活哲学？',
+                options: [
+                    { text: '“人生苦短，必须尽兴”', map: 'freddie_mercury' },
+                    { text: '“给和平一个机会”', map: 'john_lennon' },
+                    { text: '“规则就是用来打破的”', map: 'keith_richards' },
+                    { text: '“真实比体面更重要”', map: 'kurt_cobain' },
+                ],
+            }, {
+                q: '在一个大型聚会上，你通常在做什么？',
+                options: [
+                    { text: '掌控全场节奏，确保大家都玩得开心', map: 'freddie_mercury' },
+                    { text: '靠在角落观察人群，偶尔加入有深度的对话', map: 'thom_yorke' },
+                    { text: '拉着几个投缘的人聊到忘记时间', map: 'robert_plant' },
+                    { text: '觉得有点无聊，想早点离开', map: 'roger_waters' },
+                ],
+            }, {
+                q: '如果可以选择一种超能力，你会选？',
+                options: [
+                    { text: '让所有人听从你的指挥', map: 'axl_rose' },
+                    { text: '看透一切谎言和伪装', map: 'john_lennon' },
+                    { text: '永远不会疲惫，能量无限', map: 'angus_young' },
+                    { text: '进入他人的梦境看看他们在想什么', map: 'robert_smith' },
+                ],
+            }, {
+                q: '你的穿衣风格更接近？',
+                options: [
+                    { text: '精心搭配，出门就是一场秀', map: 'freddie_mercury' },
+                    { text: '经典不过时，注重质感', map: 'david_gilmour' },
+                    { text: '随便抓一件就好，衣服不是重点', map: 'kurt_cobain' },
+                    { text: '标志性单品，让人一眼认出是你', map: 'slash' },
+                ],
+            }, {
+                q: '工作中遇到一个不合理的安排，你会？',
+                options: [
+                    { text: '直接质疑，不拐弯抹角', map: 'liam_gallagher' },
+                    { text: '先忍着，但暗地里按自己的方式做', map: 'jimmy_page' },
+                    { text: '写一封逻辑严密的反驳邮件', map: 'roger_waters' },
+                    { text: '联合其他人一起发声', map: 'billie_joe' },
+                ],
+            }, {
+                q: '你更欣赏哪种类型的艺术表达？',
+                options: [
+                    { text: '宏大叙事，史诗般的震撼力', map: 'billy_corgan' },
+                    { text: '细腻感性，直击心灵的温柔', map: 'david_gilmour' },
+                    { text: '原始粗粝，不加修饰的力量', map: 'kurt_cobain' },
+                    { text: '诗意的文字与意象的交织', map: 'patti_smith' },
+                ],
+            }, {
+                q: '旅行时你最看重什么？',
+                options: [
+                    { text: '探索未知的刺激和冒险', map: 'robert_plant' },
+                    { text: '感受当地的真实生活而非景点打卡', map: 'keith_richards' },
+                    { text: '独自漫游，给自己思考和沉淀的空间', map: 'thom_yorke' },
+                    { text: '和当地的音乐与艺术产生连接', map: 'patti_smith' },
+                ],
+            }, {
+                q: '如果有人贬低你热爱的事物，你的反应是？',
+                options: [
+                    { text: '激烈反驳，绝不退让', map: 'axl_rose' },
+                    { text: '轻蔑一笑，懒得争论', map: 'noel_gallagher' },
+                    { text: '耐心解释，试图让对方理解', map: 'john_lennon' },
+                    { text: '表面平静，内心已经翻白眼一万次', map: 'roger_waters' },
+                ],
+            }, {
+                q: '你觉得自己最像哪种动物？',
+                options: [
+                    { text: '狮子——天生的王者气场', map: 'robert_plant' },
+                    { text: '猫——独立、神秘、来去自如', map: 'slash' },
+                    { text: '狼——在群体中忠诚但保有野性', map: 'jimmy_page' },
+                    { text: '松鼠——精力充沛停不下来', map: 'angus_young' },
+                ],
+            }, {
+                q: '一段关系中，你最看重什么？',
+                options: [
+                    { text: '激情和火花，不能没有热烈', map: 'freddie_mercury' },
+                    { text: '深刻的理解和灵魂的共鸣', map: 'robert_smith' },
+                    { text: '忠诚和不会离开的承诺', map: 'keith_richards' },
+                    { text: '自由的空间，不能被束缚', map: 'liam_gallagher' },
+                ],
+            }, {
+                q: '你对“成功”的定义更接近？',
+                options: [
+                    { text: '让全世界记住你的名字', map: 'billy_corgan' },
+                    { text: '按自己的方式活，不受任何人的摆布', map: 'keith_richards' },
+                    { text: '做出真正有意义、能影响他人的作品', map: 'john_lennon' },
+                    { text: '内心平静，不再被焦虑困扰', map: 'thom_yorke' },
+                ],
+            }, {
+                q: '你小时候最可能被老师评价为？',
+                options: [
+                    { text: '“聪明但太闹了”', map: 'angus_young' },
+                    { text: '“很有想法但不合群”', map: 'roger_waters' },
+                    { text: '“有艺术天赋但情绪化”', map: 'kurt_cobain' },
+                    { text: '“嘴巴太厉害，说不过ta”', map: 'noel_gallagher' },
+                ],
+            }, {
+                q: '面对一个全新的挑战，你的第一反应是？',
+                options: [
+                    { text: '兴奋！终于有刺激的事了', map: 'robert_plant' },
+                    { text: '仔细研究所有细节后再行动', map: 'jimmy_page' },
+                    { text: '有点焦虑但硬着头皮上', map: 'thom_yorke' },
+                    { text: '不管三七二十一，先冲再说', map: 'angus_young' },
+                ],
+            }, {
+                q: '你处理负面情绪的方式是？',
+                options: [
+                    { text: '把它们转化为创作或工作的动力', map: 'billy_corgan' },
+                    { text: '写下来，用文字梳理清楚', map: 'patti_smith' },
+                    { text: '一个人待着，慢慢消化', map: 'robert_smith' },
+                    { text: '找个方式发泄出来，比如运动或大喊', map: 'axl_rose' },
+                ],
+            }, {
+                q: '你更喜欢哪种社交场合？',
+                options: [
+                    { text: '小型私人聚会，深度交流', map: 'david_gilmour' },
+                    { text: '热闹的酒吧或livehouse', map: 'keith_richards' },
+                    { text: '志同道合者的讨论会', map: 'patti_smith' },
+                    { text: '无所谓，我在哪都差不多', map: 'slash' },
+                ],
+            }, {
+                q: '哪种颜色最能代表你的内心？',
+                options: [
+                    { text: '金色——耀眼、温暖、不容忽视', map: 'freddie_mercury' },
+                    { text: '深蓝——深邃、冷静、有距离感', map: 'roger_waters' },
+                    { text: '暗红——浓烈、复杂、暗流涌动', map: 'billy_corgan' },
+                    { text: '灰色——介于黑白之间，模糊而真实', map: 'kurt_cobain' },
+                ],
+            }, {
+                q: '如果让你选择一种方式来影响世界，你会选？',
+                options: [
+                    { text: '通过艺术和美感打动人心', map: 'david_gilmour' },
+                    { text: '通过文字和思想唤醒人们', map: 'john_lennon' },
+                    { text: '通过行动和态度树立榜样', map: 'patti_smith' },
+                    { text: '通过能量和激情点燃人群', map: 'angus_young' },
+                ],
+            }, {
+                q: '你如何看待“怀旧”？',
+                options: [
+                    { text: '过去确实美好，但我不沉溺其中', map: 'noel_gallagher' },
+                    { text: '某些记忆是需要被珍藏的艺术品', map: 'robert_smith' },
+                    { text: '怀旧是软弱的表现，要向前看', map: 'liam_gallagher' },
+                    { text: '过去的伤痛塑造了现在的我，我不会忘记', map: 'kurt_cobain' },
+                ],
+            }, {
+                q: '在团队中，你最自然的角色是？',
+                options: [
+                    { text: '掌控全局的领导者', map: 'jimmy_page' },
+                    { text: '提出创意的灵感来源', map: 'billy_corgan' },
+                    { text: '稳定军心的可靠成员', map: 'david_gilmour' },
+                    { text: '质疑现状的批判者', map: 'roger_waters' },
+                ],
+            }, {
+                q: '你对“规则”的态度是？',
+                options: [
+                    { text: '尊重规则，但不妨碍我另辟蹊径', map: 'jimmy_page' },
+                    { text: '规则是给人安全感的东西', map: 'david_gilmour' },
+                    { text: '大部分规则都该被质疑和打破', map: 'john_lennon' },
+                    { text: '我有自己的规则，不劳别人操心', map: 'keith_richards' },
+                ],
+            }, {
+                q: '哪种自然景观最让你感到共鸣？',
+                options: [
+                    { text: '辽阔的旷野——自由而充满可能', map: 'robert_plant' },
+                    { text: '深夜的星空——深邃而引发思考', map: 'thom_yorke' },
+                    { text: '汹涌的海浪——力量与不可预测', map: 'axl_rose' },
+                    { text: '雾中的树林——神秘而情感丰富', map: 'robert_smith' },
+                ],
+            }, {
+                q: '朋友遇到困难时，你通常会？',
+                options: [
+                    { text: '给出犀利但有用的建议', map: 'noel_gallagher' },
+                    { text: '默默陪伴，让ta知道你在', map: 'slash' },
+                    { text: '用自己的经历鼓励ta', map: 'patti_smith' },
+                    { text: '帮ta分析问题的根源', map: 'roger_waters' },
+                ],
+            }, {
+                q: '你更倾向于哪种表达爱的方式？',
+                options: [
+                    { text: '热烈直接，爱就要大声说出来', map: 'freddie_mercury' },
+                    { text: '细腻的行动，胜过千言万语', map: 'david_gilmour' },
+                    { text: '写一封长信或一首诗', map: 'robert_smith' },
+                    { text: '在关键时刻坚定地站在ta身边', map: 'keith_richards' },
+                ],
+            }, {
+                q: '对于“流行趋势”，你的态度是？',
+                options: [
+                    { text: '引领趋势而非追随趋势', map: 'billy_corgan' },
+                    { text: '大部分趋势都很无聊', map: 'thom_yorke' },
+                    { text: '挑自己喜欢的部分，不完全拒绝也不盲从', map: 'david_gilmour' },
+                    { text: '完全不在意，我有自己的风格', map: 'slash' },
+                ],
+            }, {
+                q: '你最大的缺点可能是？',
+                options: [
+                    { text: '太强势，有时候会压倒别人', map: 'axl_rose' },
+                    { text: '太敏感，容易想太多', map: 'kurt_cobain' },
+                    { text: '太固执，听不进不同意见', map: 'liam_gallagher' },
+                    { text: '太冷漠，让人觉得难以接近', map: 'roger_waters' },
+                ],
+            }, {
+                q: '回顾你的人生，你最自豪的会是？',
+                options: [
+                    { text: '我从未背叛过自己的真实', map: 'kurt_cobain' },
+                    { text: '我按自己的方式活了一辈子', map: 'keith_richards' },
+                    { text: '我创造了一些能留下来影响后世的东西', map: 'john_lennon' },
+                    { text: '我在最困难的时候也没有放弃', map: 'patti_smith' },
+                ],
+            }, {
+                q: '最后一道题——摇滚精神对你来说是什么？',
+                options: [
+                    { text: '毫无保留地燃烧自己', map: 'freddie_mercury' },
+                    { text: '对虚伪的世界说“不”', map: 'john_lennon' },
+                    { text: '做最真实的自己，无论代价', map: 'kurt_cobain' },
+                    { text: '在混乱中找到属于自己的节奏', map: 'keith_richards' },
+                ],
+            }, ];
+
+            // ==================== 状态管理 ====================
+            let currentQuestionIndex = 0;
+            let scores = {};
+            let quizStarted = false;
+            let quizFinished = false;
+            let isTransitioning = false;
+
+            // 初始化所有明星分数
+            function resetScores() {
+                scores = {};
+                for (const key in rockStars) {
+                    scores[key] = 0;
+                }
+            }
+            resetScores();
+
+            // ==================== DOM元素 ====================
+            const screenWelcome = document.getElementById('screenWelcome');
+            const screenQuestion = document.getElementById('screenQuestion');
+            const screenResult = document.getElementById('screenResult');
+            const progressArea = document.getElementById('progressArea');
+            const progressFill = document.getElementById('progressFill');
+            const progressCurrent = document.getElementById('progressCurrent');
+            const questionText = document.getElementById('questionText');
+            const optionsList = document.getElementById('optionsList');
+            const questionNumberInd = document.getElementById('questionNumberInd');
+            const resultInner = document.getElementById('resultInner');
+            const transitionOverlay = document.getElementById('transitionOverlay');
+
+            function switchScreen(fromScreen, toScreen, callback) {
+                if (fromScreen) {
+                    fromScreen.classList.remove('active');
+                    fromScreen.classList.add('exit-up');
+                    setTimeout(() => {
+                        fromScreen.classList.remove('exit-up');
+                    }, 550);
+                }
+                setTimeout(() => {
+                    if (toScreen) {
+                        toScreen.classList.add('active');
+                    }
+                    if (callback) callback();
+                }, 200);
+            }
+
+            function flashOverlay() {
+                transitionOverlay.classList.add('flash');
+                setTimeout(() => {
+                    transitionOverlay.classList.remove('flash');
+                }, 120);
+            }
+
+            // ==================== 渲染题目 ====================
+            function renderQuestion(index) {
+                if (index >= questions.length) {
+                    finishQuiz();
                     return;
                 }
-                answered = false;
-                updateProgress();
-                const q = questions[currentQuestion];
-                let html = '<div class="question-area">';
-                html += `<span class="question-number">Question ${currentQuestion + 1}</span>`;
-                html += `<p class="question-text">${q.q}</p>`;
-                html += '<div class="options-list">';
+                const qData = questions[index];
+                questionText.textContent = qData.q;
+                questionNumberInd.textContent = `第 ${index + 1} 题`;
+                optionsList.innerHTML = '';
                 const letters = ['A', 'B', 'C', 'D'];
-                q.options.forEach((opt, i) => {
-                    html += `
-                        <button class="option-btn" data-index="${i}" data-letter="${letters[i]}">
-                            <span class="opt-letter">${letters[i]}</span>
-                            <span class="opt-text">${opt.text}</span>
-                        </button>`;
-                });
-                html += '</div></div>';
-                contentArea.innerHTML = html;
-
-                const buttons = contentArea.querySelectorAll('.option-btn');
-                buttons.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        if (answered) return;
-                        answered = true;
-                        const idx = parseInt(this.getAttribute('data-index'));
-                        buttons.forEach(b => b.style.cssText = 'pointer-events:none;opacity:0.5;');
-                        this.style.cssText =
-                            'border-color:#ff5e2c !important;background:rgba(255,94,44,0.2) !important;opacity:1 !important;pointer-events:none;box-shadow:0 0 20px rgba(255,94,44,0.7);';
-                        this.querySelector('.opt-letter').style.background = 'rgba(255,94,44,0.5)';
-                        this.querySelector('.opt-letter').style.color = '#fff';
-                        const chosenScores = q.options[idx].scores;
-                        chosenScores.forEach(([memberId, points]) => {
-                            scores[memberId] += points;
-                        });
-                        setTimeout(() => {
-                            currentQuestion++;
-                            renderQuestion();
-                        }, 400);
+                qData.options.forEach((opt, i) => {
+                    const li = document.createElement('li');
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerHTML =
+                        `<span class="option-letter">${letters[i]}</span><span>${opt.text}</span>`;
+                    btn.addEventListener('click', () => {
+                        if (isTransitioning) return;
+                        selectOption(index, opt.map, btn);
                     });
+                    li.appendChild(btn);
+                    optionsList.appendChild(li);
                 });
+                updateProgress(index);
             }
 
-            function showResult() {
-                updateProgress();
-                progressFill.style.width = '100%';
-                progressLabel.textContent = '🎯 结果揭晓！';
-                progressPercent.textContent = '100%';
-                let maxScore = -1;
-                let winnerIdx = 0;
-                const maxIndices = [];
-                scores.forEach((s, i) => {
-                    if (s > maxScore) {
-                        maxScore = s;
-                        maxIndices.length = 0;
-                        maxIndices.push(i);
-                    } else if (s === maxScore) {
-                        maxIndices.push(i);
-                    }
-                });
-                winnerIdx = maxIndices[Math.floor(Math.random() * maxIndices.length)];
-                const winner = members[winnerIdx];
-                let html = '<div class="result-area">';
-                html += `<div class="result-emoji">${winner.emoji}</div>`;
-                html += `<p class="result-band">${winner.band}</p>`;
-                html += `<p class="result-member">${winner.name} <span style="font-size:0.85rem;color:#aaa;">(${winner.role})</span></p>`;
-                html += `<p class="result-tagline">"${winner.tagline}"</p>`;
-                html += `<p class="result-desc">${winner.desc}</p>`;
-                html += '<div class="result-traits">';
-                winner.traits.forEach(t => {
-                    html += `<span class="trait-tag">${t}</span>`;
-                });
-                html += '</div>';
-                html += `
-                    <button class="btn btn-primary" onclick="location.reload()">🔄 重新测试</button>
-                    <button class="btn btn-outline" id="btnShare">📋 复制结果</button>
-                `;
-                html += '<p class="signature">——made by StonePumpkins</p>';
-                html += '</div>';
-                contentArea.innerHTML = html;
+            function updateProgress(index) {
+                const pct = ((index) / questions.length) * 100;
+                progressFill.style.width = pct + '%';
+                progressCurrent.textContent = index + 1;
+            }
+
+            function selectOption(index, starKey, btnElement) {
+                if (isTransitioning) return;
+                isTransitioning = true;
+
+                // 加分
+                if (scores[starKey] !== undefined) {
+                    scores[starKey] += 1;
+                }
+
+                // 选中动画
+                btnElement.classList.add('selected-flash');
+                flashOverlay();
+
+                // 禁用所有按钮
+                const allBtns = optionsList.querySelectorAll('.option-btn');
+                allBtns.forEach(b => b.style.pointerEvents = 'none');
 
                 setTimeout(() => {
-                    const shareBtn = document.getElementById('btnShare');
-                    if (shareBtn) {
-                        shareBtn.addEventListener('click', () => {
-                            const shareText = `🎸 摇滚人格测试结果：我最像【${winner.band}】的 ${winner.name}（${winner.role}）！"${winner.tagline}" 来看看你骨子里是哪个摇滚灵魂？ ——made by StonePumpkins`;
-                            if (navigator.clipboard) {
-                                navigator.clipboard.writeText(shareText).then(() => {
-                                    shareBtn.textContent = '✅ 已复制！';
-                                    setTimeout(() => {
-                                        shareBtn.textContent = '📋 复制结果';
-                                    }, 2000);
-                                });
-                            } else {
-                                alert(shareText);
-                            }
-                        });
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < questions.length) {
+                        renderQuestion(currentQuestionIndex);
+                        // 重新启用按钮
+                        const newBtns = optionsList.querySelectorAll('.option-btn');
+                        newBtns.forEach(b => b.style.pointerEvents = 'auto');
+                        isTransitioning = false;
+                    } else {
+                        finishQuiz();
+                        isTransitioning = false;
                     }
-                }, 100);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+                }, 380);
             }
 
-            updateProgress();
-            renderQuestion();
+            // ==================== 开始测试 ====================
+            function startQuiz() {
+                if (quizStarted) return;
+                quizStarted = true;
+                resetScores();
+                currentQuestionIndex = 0;
+                quizFinished = false;
+                progressArea.classList.remove('hidden');
+                updateProgress(0);
+                switchScreen(screenWelcome, screenQuestion, () => {
+                    renderQuestion(0);
+                });
+            }
+
+            // ==================== 完成测试 ====================
+            function finishQuiz() {
+                if (quizFinished) return;
+                quizFinished = true;
+                progressFill.style.width = '100%';
+                progressCurrent.textContent = '30';
+
+                // 计算排名
+                const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+                const topStar = sorted[0];
+                const runnerUps = sorted.slice(1, 4);
+                const maxScore = topStar[1];
+                const totalPossible = questions.length;
+                const percentage = Math.round((maxScore / totalPossible) * 100);
+
+                const starData = rockStars[topStar[0]];
+
+                setTimeout(() => {
+                    switchScreen(screenQuestion, screenResult, () => {
+                        progressArea.classList.add('hidden');
+                        displayResult(starData, percentage, runnerUps, maxScore, totalPossible);
+                    });
+                }, 300);
+            }
+
+            function displayResult(starData, percentage, runnerUps, maxScore, totalPossible) {
+                let runnerUpHTML = '';
+                runnerUps.forEach(([key, score]) => {
+                    if (score > 0) {
+                        const rpct = Math.round((score / totalPossible) * 100);
+                        runnerUpHTML += `
+                            <div class="runnerup-item">
+                                <div class="runnerup-name">${rockStars[key].name}</div>
+                                <div class="runnerup-percent">${rpct}% 匹配</div>
+                            </div>`;
+                    }
+                });
+
+                resultInner.innerHTML = `
+                    <div class="result-badge">你的摇滚灵魂</div>
+                    <div style="font-size:5rem;display:block;margin:8px 0;filter:drop-shadow(0 8px 20px rgba(200,170,120,0.35));">${starData.emoji}</div>
+                    <div class="result-name">${starData.name}</div>
+                    <div class="result-band">${starData.band}</div>
+                    <div class="result-match-bar">
+                        <div class="result-match-dot"></div>
+                        <div class="result-match-line"></div>
+                        <div class="result-match-percent">${percentage}% 匹配</div>
+                        <div class="result-match-line"></div>
+                        <div class="result-match-dot"></div>
+                    </div>
+                    <div class="result-divider"></div>
+                    <p class="result-desc">${starData.desc}</p>
+                    ${runnerUpHTML ? `
+                    <div style="font-size:0.75rem;color:var(--text-muted);letter-spacing:0.1em;margin-bottom:12px;font-family:var(--font-display);">其他接近的匹配</div>
+                    <div class="result-runnerups">${runnerUpHTML}</div>` : ''}
+                    <button class="btn-retry" onclick="retryQuiz()">重新测试</button>
+                    <div class="result-madeby">——made by StonePumpkins</div>
+                `;
+            }
+
+            function retryQuiz() {
+                resetScores();
+                currentQuestionIndex = 0;
+                quizFinished = false;
+                quizStarted = true;
+                progressArea.classList.remove('hidden');
+                updateProgress(0);
+                switchScreen(screenResult, screenQuestion, () => {
+                    renderQuestion(0);
+                });
+            }
+
+            // 暴露到全局
+            window.startQuiz = startQuiz;
+            window.retryQuiz = retryQuiz;
+
+            // ==================== 键盘支持 ====================
+            document.addEventListener('keydown', (e) => {
+                if (!quizStarted || quizFinished || isTransitioning) return;
+                if (currentQuestionIndex >= questions.length) return;
+                const key = e.key.toLowerCase();
+                const map = { 'a': 0, 'b': 1, 'c': 2, 'd': 3, '1': 0, '2': 1, '3': 2, '4': 3 };
+                if (map[key] !== undefined) {
+                    const btns = optionsList.querySelectorAll('.option-btn');
+                    if (btns[map[key]]) {
+                        btns[map[key]].click();
+                    }
+                }
+            });
+
+            // ==================== 初始化 ====================
+            screenWelcome.classList.add('active');
+            console.log('%c🎸 摇滚灵魂测试已就绪 %c——made by StonePumpkins',
+                'font-size:1.2em;color:#c9a96e;', 'color:#b0c4d8;');
+            console.log('%c按 A/B/C/D 或 1/2/3/4 键可以快速选择选项', 'color:#6b8aab;font-style:italic;');
         })();
     </script>
 </body>
